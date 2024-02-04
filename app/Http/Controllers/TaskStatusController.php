@@ -11,7 +11,7 @@ class TaskStatusController extends Controller
     {
         $this->authorizeResource(TaskStatus::class);
     }
-    
+
     public function index()
     {
         $statuses = TaskStatus::paginate();
