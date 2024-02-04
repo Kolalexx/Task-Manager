@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class TaskStatusController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(TaskStatus::class);
+    }
     
     public function index()
     {
@@ -30,14 +34,11 @@ class TaskStatusController extends Controller
             'name' => 'required|unique:task_statuses',
         ], $messages);
 
-        $request->session()->flash('errors', 'Статус успешно создан');
-
         $status = new TaskStatus();
-        $status->fill($data);
-        $status->save();
+        $status->fill($data)->save();
 
-        return redirect()
-            ->route('task_statuses.index');
+        flash(__('messages.Статус успешно создан'))->success();
+        return redirect()->route('task_statuses.index');
     }
 
     public function edit(TaskStatus $taskStatus)

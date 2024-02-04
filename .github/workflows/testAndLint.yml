@@ -14,3 +14,4 @@ jobs:
           php-version: '8.2'
       - run: make install
       - run: make lint
+      - run: make test
