@@ -11,7 +11,7 @@
                     <div class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1">
                         <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                             <li>
-                                <a href="https://php-task-manager-ru.hexlet.app/tasks" class="block py-2 pl-3 pr-4 text-gray-700 hover:text-blue-700 lg:p-0">
+                                <a href="/tasks" class="block py-2 pl-3 pr-4 text-gray-700 hover:text-blue-700 lg:p-0">
                                 Задачи                                </a>
                             </li>
                             <li>
