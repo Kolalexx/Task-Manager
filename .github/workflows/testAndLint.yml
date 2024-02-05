@@ -12,6 +12,17 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-      - run: make install
-      - run: make lint
-      - run: make test
+
+      - name: Run composer install
+        run: make install
+
+      - name: Prepare Laravel Application
+        run: |
+          cp .env.ci .env
+          php artisan key:generate
+
+      - name: run lint
+        run: make lint
+
+      - name: run tests
+        run: make test
