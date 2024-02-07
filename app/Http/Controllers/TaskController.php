@@ -4,17 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\QueryBuilder;
+use App\Models\TaskStatus;
+use App\Models\User;
 
 class TaskController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(Task::class);
-    }
+   // public function __construct()
+   // {
+     //   $this->authorizeResource(Task::class);
+   // }
 
     public function index()
     {
-        $tasks = TaskStatus::paginate();
+        $tasks = QueryBuilder::for(Task::class)
+            ->orderBy('id')
+            ->paginate(15);
         return view('task.index', compact('tasks'));
     }
 

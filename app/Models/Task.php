@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Carbon\Carbon;
 
 class Task extends Model
 {
@@ -30,5 +32,12 @@ class Task extends Model
     public function executor()
     {
         return $this->belongsTo(User::class, 'assigned_to_id');
+    }
+
+    protected function formattedDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => Carbon::parse($this->created_at)->format('d.m.Y'),
+        );
     }
 }
