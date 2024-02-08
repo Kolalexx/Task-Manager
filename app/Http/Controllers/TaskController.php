@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 use App\Models\TaskStatus;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -23,20 +24,37 @@ class TaskController extends Controller
         return view('task.index', compact('tasks'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $task = new Task();
+        $statuses = TaskStatus::pluck('name', 'id');
+        
+        $execs = User::pluck('name', 'id');
+
+        return view('task.create', compact('task', 'statuses', 'execs'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $messages = [
+            'name.required' => 'Это обязательное поле',
+            'name.unique' => 'Задача с таким именем уже существует',
+            'status_id' => 'Это обязательное поле',
+        ];
+        $data = $this->validate($request, [
+            'name' => 'required|unique:tasks',
+            'description' => 'nullable',
+            'status_id' => 'required',
+            'assigned_to_id' => '',
+        ], $messages);
+
+        $task = new Task();
+        $task->fill($data);
+        $task->created_by_id = (int) Auth::id();
+        $task->save();
+
+        flash(__('messages.The task was successfully created'))->success();
+        return redirect()->route('tasks.index');
     }
 
     /**
