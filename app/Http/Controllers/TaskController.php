@@ -65,20 +65,34 @@ class TaskController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Task $task)
     {
-        //
+        $statuses = TaskStatus::pluck('name', 'id');
+        
+        $execs = User::pluck('name', 'id');
+
+        return view('task.edit', compact('task', 'statuses', 'execs'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Task $task)
     {
-        //
+        $messages = [
+            'name' => 'Это обязательное поле',
+            'status_id' => 'Это обязательное поле',
+        ];
+
+        $data = $this->validate($request, [
+            'name' => 'required:tasks,name,' . $task->id,
+            'description' => 'nullable:tasks,description',
+            'status_id' => 'required:tasks,status_id' . $task->id,
+            'assigned_to_id' => '',
+        ], $messages);
+
+        $task->fill($data);
+        $task->save();
+
+        flash(__('messages.The task has been successfully updated'))->success();
+        return redirect()->route('tasks.index');
     }
 
     /**
