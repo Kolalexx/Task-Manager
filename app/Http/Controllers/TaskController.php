@@ -28,7 +28,7 @@ class TaskController extends Controller
     {
         $task = new Task();
         $statuses = TaskStatus::pluck('name', 'id');
-        
+
         $execs = User::pluck('name', 'id');
 
         return view('task.create', compact('task', 'statuses', 'execs'));
@@ -57,18 +57,15 @@ class TaskController extends Controller
         return redirect()->route('tasks.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Task $task)
     {
-        //
+        return view('task.show', compact('task'));
     }
 
     public function edit(Task $task)
     {
         $statuses = TaskStatus::pluck('name', 'id');
-        
+
         $execs = User::pluck('name', 'id');
 
         return view('task.edit', compact('task', 'statuses', 'execs'));
