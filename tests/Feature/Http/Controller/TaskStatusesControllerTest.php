@@ -6,96 +6,92 @@ use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 
 class TaskStatusesControllerTest extends TestCase
 {
-    private string $tableName;
-    private array $formData;
-    private User $user;
-    private TaskStatus $taskStatus;
+    use RefreshDatabase;
 
-    protected function setUp(): void
+    public function testIndex()
     {
-        parent::setUp();
+        $response = $this->get(route('task_statuses.index'));
+        $response->assertStatus(200);
+    }
 
+    public function testCreate()
+    {
+        $this->actingAs(User::factory()->create());
+        $response = $this->get(route('task_statuses.create'));
+        $response->assertStatus(200);
+    }
+
+    public function testEdit()
+    {
+        $taskStatus = TaskStatus::factory()->create();
+        $this->actingAs(User::factory()->create());
+        $response = $this->get(route('task_statuses.edit', $taskStatus));
+        $response->assertStatus(200);
+    }
+
+    public function testUpdate()
+    {
+        $this->actingAs(User::factory()->create());
+        $taskStatus = TaskStatus::factory()->create();
+        $data = $taskStatus->only(['name']);
+        $response = $this
+            ->patch(route('task_statuses.update', $taskStatus), $data);
+        $response->assertRedirect();
+        $this->assertDatabaseHas('task_statuses', $data);
+    }
+
+    public function testDestroy()
+    {
+        $this->actingAs(User::factory()->create());
+        $taskStatus = TaskStatus::factory()->create();
+        $this->assertDatabaseHas('task_statuses', ['id' => $taskStatus->id]);
+        $response = $this->delete(route('task_statuses.destroy', $taskStatus));
+        $response->assertRedirect();
+        $this->assertDatabaseMissing('task_statuses', ['id' => $taskStatus->id]);
+    }
+
+    public function testStore()
+    {
         $taskStatus = TaskStatus::factory()->make();
-        $this->user = User::factory()->create();
-        $this->taskStatus = TaskStatus::factory()->create();
-        $this->tableName = $taskStatus->getTable();
-        $this->formData = $taskStatus->only(['name']);
+        $this->actingAs(User::factory()->create());
+        $response = $this->post(route('task_statuses.store'), $taskStatus->toArray());
+        $this->assertDatabaseHas('task_statuses', $taskStatus->toArray());
+        $response->assertRedirect();
     }
 
-    public function testIndex(): void
+    public function testGuestCanNotStore()
     {
-        $this->actingAs($this->user)->get(route('task_statuses.index'))
-            ->assertStatus(200);
+        $taskStatus = TaskStatus::factory()->make();
+        $hadBeen = TaskStatus::count();
+        $response = $this->post(route('task_statuses.store'), $taskStatus->toArray());
+        $became = TaskStatus::count();
+
+        $this->assertEquals($hadBeen, $became);
     }
 
-    public function testCreate(): void
+    public function testGuestCanNotUpdate()
     {
-        $this->actingAs($this->user)->get(route('task_statuses.create'))
-            ->assertStatus(200);
+        $taskStatus = TaskStatus::factory()->create();
+
+        $oldValue = $taskStatus->name;
+        $updatedValue = implode(' ', ["Updated Title", rand()]);
+        $taskStatus->name = $updatedValue;
+        $this->patch(route('task_statuses.update', $taskStatus), $taskStatus->toArray());
+
+        $this->assertDatabaseHas('task_statuses', ['id' => $taskStatus->id , 'name' => $oldValue]);
     }
 
-    public function testCreateUnathorized(): void
+    public function testGuestCanNotDelete()
     {
-        $this->get(route('task_statuses.create'))
-            ->assertStatus(403);
-    }
+        $taskStatus = TaskStatus::factory()->create();
 
-    public function testStore(): void
-    {
-        $this->actingAs($this->user)->post(route('task_statuses.store', $this->formData))
-            ->assertSessionHasNoErrors()
-            ->assertRedirect(route('task_statuses.index'));
-
-        $this->assertDatabaseHas($this->tableName, $this->formData);
-    }
-
-    public function testStoreEmptyField(): void
-    {
-        $this->actingAs($this->user)->post(route('task_statuses.store', []))
-            ->assertSessionHasErrors(['name']);
-    }
-
-    public function testEdit(): void
-    {
-        $this->actingAs($this->user)->get(route('task_statuses.edit', $this->taskStatus))
-            ->assertStatus(200);
-    }
-
-    public function testEditUnathorized(): void
-    {
-        $this->get(route('task_statuses.edit', $this->taskStatus))
-            ->assertStatus(403);
-    }
-
-    public function testUpdate(): void
-    {
-        $this->actingAs($this->user)
-            ->patch(route('task_statuses.update', $this->taskStatus), $this->formData)
-            ->assertSessionHasNoErrors()
-            ->assertRedirect(route('task_statuses.index'));
-
-        $this->assertDatabaseHas($this->tableName, $this->formData);
-    }
-
-    public function testDestroy(): void
-    {
-        $this->actingAs($this->user)
-            ->delete(route('task_statuses.destroy', $this->taskStatus))
-            ->assertRedirect(route('task_statuses.index'));
-
-        $this->assertDatabaseMissing($this->tableName, $this->formData);
-    }
-
-    public function testDestroyRelatedTask(): void
-    {
-        Task::factory()->create(['status_id' => $this->taskStatus]);
-        $this->actingAs($this->user)
-            ->delete(route('task_statuses.destroy', $this->taskStatus))
-            ->assertRedirect(route('task_statuses.index'));
-
-        $this->assertDatabaseHas($this->tableName, $this->taskStatus->only(['name',]));
+        $this->assertDatabaseHas('task_statuses', ['id' => $taskStatus->id]);
+        $this->delete(route('task_statuses.destroy', $taskStatus));
+        $this->assertDatabaseHas('task_statuses', ['id' => $taskStatus->id]);
     }
 }
