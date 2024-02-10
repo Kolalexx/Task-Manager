@@ -92,11 +92,11 @@ class TaskController extends Controller
         return redirect()->route('tasks.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Task $task)
     {
-        //
+        $task->delete();
+        flash(__('views.task.flash.destroy.success'));
+
+        return redirect()->route('tasks.index');
     }
 }

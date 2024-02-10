@@ -127,6 +127,8 @@ return [
         'edit' => 'Изменить',
         'delete' => 'Удалить',
         'confirmationi' => 'Вы уверены?',
-    ]
+    ],
+    'This is a simple task manager on Laravel' => 'Это простой менеджер задач на Laravel',
+    'Push me' => 'Нажми меня'
 
 ];
