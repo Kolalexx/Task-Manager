@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Carbon\Carbon;
+use App\Models\Label;
 
 class Task extends Model
 {
@@ -32,6 +33,11 @@ class Task extends Model
     public function executor()
     {
         return $this->belongsTo(User::class, 'assigned_to_id');
+    }
+
+    public function labels()
+    {
+        return $this->belongsToMany(Label::class);
     }
 
     protected function formattedDate(): Attribute
