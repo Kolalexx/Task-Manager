@@ -7,12 +7,11 @@ use Illuminate\Http\Request;
 
 class LabelController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
-        //
+        $labels = Label::all();
+        return view('label.index', compact('labels'));
     }
 
     /**
