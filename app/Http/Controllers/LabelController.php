@@ -7,27 +7,24 @@ use Illuminate\Http\Request;
 
 class LabelController extends Controller
 {
-
     public function index()
     {
         $labels = Label::all();
         return view('label.index', compact('labels'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $label = new Label();
+        return view('label.create', compact('label'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        Label::create($data);
+        flash(__('views.label.flash.store'));
+        return redirect()->route('labels.index');
     }
 
     /**
@@ -54,11 +51,14 @@ class LabelController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Label $label)
     {
-        //
+        if ($label->tasks->isNotEmpty()) {
+            flash(__('views.label.flash.destroy.fail.constraint'));
+        } else {
+            $label->delete();
+            flash(__('views.label.flash.destroy.success'));
+        }
+        return redirect()->route('labels.index');
     }
 }
