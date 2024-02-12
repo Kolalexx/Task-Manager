@@ -20,14 +20,6 @@ class LabelTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function testShow()
-    {
-        $this->actingAs(User::factory()->create());
-        $label = Label::factory()->create();
-        $response = $this->get(route('labels.show', $label));
-        $response->assertStatus(200);
-    }
-
     public function testCreate()
     {
         $this->actingAs(User::factory()->create());

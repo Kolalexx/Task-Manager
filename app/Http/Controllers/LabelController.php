@@ -35,20 +35,20 @@ class LabelController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Label $label)
     {
-        //
+        return view('label.edit', compact('label'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Label $label)
     {
-        //
+        $data = $request->all();
+
+        $label->fill($data);
+
+        $label->save();
+        flash(__('views.label.flash.update'));
+        return redirect()->route('labels.index');
     }
 
     public function destroy(Label $label)
