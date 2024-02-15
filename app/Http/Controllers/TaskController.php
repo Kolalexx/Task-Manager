@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 use App\Models\TaskStatus;
 use App\Models\User;
+use App\Models\Label;
 use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
@@ -28,10 +29,10 @@ class TaskController extends Controller
     {
         $task = new Task();
         $statuses = TaskStatus::pluck('name', 'id');
-
         $execs = User::pluck('name', 'id');
+        $labels = Label::pluck('name', 'id');
 
-        return view('task.create', compact('task', 'statuses', 'execs'));
+        return view('task.create', compact('task', 'statuses', 'execs', 'labels'));
     }
 
     public function store(Request $request)
@@ -52,6 +53,10 @@ class TaskController extends Controller
         $task->fill($data);
         $task->created_by_id = (int) Auth::id();
         $task->save();
+        $labels = collect($request->input('labels'))
+            ->filter(fn($label) => $label !== null);
+        $label = Label::find($labels);
+        $task->labels()->attach($label);
 
         flash(__('messages.The task was successfully created'))->success();
         return redirect()->route('tasks.index');
@@ -59,16 +64,17 @@ class TaskController extends Controller
 
     public function show(Task $task)
     {
-        return view('task.show', compact('task'));
+        $labels = $task->labels;
+        return view('task.show', compact('task', 'labels'));
     }
 
     public function edit(Task $task)
     {
         $statuses = TaskStatus::pluck('name', 'id');
-
         $execs = User::pluck('name', 'id');
+        $labels = Label::pluck('name', 'id');
 
-        return view('task.edit', compact('task', 'statuses', 'execs'));
+        return view('task.edit', compact('task', 'statuses', 'execs', 'labels'));
     }
 
     public function update(Request $request, Task $task)
@@ -87,6 +93,11 @@ class TaskController extends Controller
 
         $task->fill($data);
         $task->save();
+
+        $labels = collect($request->input('labels'))
+            ->filter(fn($label) => $label !== null);
+        $label = Label::find($labels);
+        $task->labels()->sync($label);
 
         flash(__('messages.The task has been successfully updated'))->success();
         return redirect()->route('tasks.index');

@@ -19,6 +19,7 @@
                 <x-text-input-block entity="task" name="description" :items=$statuses />
                 <x-select-input-block entity="task" name="status_id" :items=$statuses required />
                 <x-select-input-block entity="task" name="assigned_to_id" :items=$execs required />
+                <x-select-input-block entity="task" name="labels" :items=$labels multiple />
                 <x-submit entity="task" type="edit" />
             </div>
             {{ Form::close() }}

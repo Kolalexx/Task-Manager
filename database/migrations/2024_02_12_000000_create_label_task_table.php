@@ -10,8 +10,13 @@ return new class extends Migration
     {
         Schema::create('label_task', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('label_id')->constrained();
-            $table->foreignId('task_id');
+            
+            $table->bigInteger('label_id')->nullable();
+            $table->foreign('label_id')->on('labels')->references('id');
+
+            $table->bigInteger('task_id')->nullable();
+            $table->foreign('task_id')->on('tasks')->references('id');
+
             $table->timestamps();
         });
     }
