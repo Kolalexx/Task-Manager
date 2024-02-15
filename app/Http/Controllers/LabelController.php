@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class LabelController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Label::class);
+    }
+
     public function index()
     {
         $labels = Label::all();
