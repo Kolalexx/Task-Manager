@@ -35,10 +35,10 @@ class LabelController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Label $label)
-    {
+  //  public function show(Label $label)
+    //{
         //
-    }
+    //}
 
     public function edit(Label $label)
     {
