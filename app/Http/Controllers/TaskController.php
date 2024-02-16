@@ -9,6 +9,7 @@ use App\Models\TaskStatus;
 use App\Models\User;
 use App\Models\Label;
 use Illuminate\Support\Facades\Auth;
+use Spatie\QueryBuilder\AllowedFilter;
 
 class TaskController extends Controller
 {
@@ -20,9 +21,18 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = QueryBuilder::for(Task::class)
-            ->orderBy('id')
-            ->paginate(15);
-        return view('task.index', compact('tasks'));
+            ->allowedFilters([
+                AllowedFilter::exact('status_id'),
+                AllowedFilter::exact('created_by_id'),
+                AllowedFilter::exact('assigned_to_id'),
+            ])
+            ->get();
+
+        $statuses = TaskStatus::pluck('name', 'id');
+        $execs = User::pluck('name', 'id');
+        $creators = User::pluck('name', 'id');
+
+        return view('task.index', compact('tasks', 'creators', 'statuses', 'execs'));
     }
 
     public function create()

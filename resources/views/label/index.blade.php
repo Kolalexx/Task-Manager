@@ -51,8 +51,7 @@
                                                 class="text-red-600 hover:text-red-900"
                                                 href="{{ route('labels.destroy', $label->id) }}">
                                                 {{ __('views.actions.delete') }} </a>
-                                            <a
-                                                href="{{ route('labels.edit', ['label' => $label->id]) }}">{{ __('views.actions.edit') }}</a>
+                                            <a href="{{ route('labels.edit', ['label' => $label->id]) }}">{{ __('views.actions.edit') }}</a>
                                         </td>
                                     @endauth
 
