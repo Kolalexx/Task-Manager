@@ -5,25 +5,18 @@
             <div class="flex">
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <a href="/" class="flex items-center">
-                        <span class="self-center text-xl font-semibold whitespace-nowrap">Менеджер задач</span>
-                    </a>
-                    <div class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1">
-                        <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
-                            <li>
-                                <a href="/tasks" class="block py-2 pl-3 pr-4 text-gray-700 hover:text-blue-700 lg:p-0">
-                                Задачи                                </a>
-                            </li>
-                            <li>
-                                <a href="/task_statuses" class="block py-2 pl-3 pr-4 text-gray-700 hover:text-blue-700 lg:p-0">
-                                Статусы                                </a>
-                            </li>
-                            <li>
-                                <a href="/labels" class="block py-2 pl-3 pr-4 text-gray-700 hover:text-blue-700 lg:p-0">
-                                Метки                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                    <x-nav-link href="/">
+                        {{ __('views.title') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('task_statuses.index')" :active="request()->routeIs('task_statuses.index')">
+                        {{ __('views.status.pages.index.title') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('tasks.index')" :active="request()->routeIs('tasks.index')">
+                        {{ __('views.task.pages.index.title') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('labels.index')" :active="request()->routeIs('labels.index')">
+                        {{ __('views.label.pages.index.title') }}
+                    </x-nav-link>
                 </div>
             </div>
             @auth
