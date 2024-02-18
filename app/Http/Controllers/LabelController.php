@@ -26,15 +26,23 @@ class LabelController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->all();
-        Label::create($data);
+        $messages = [
+            'name' => 'Это обязательное поле',
+            'name.unique' => 'Метка с таким именем уже существует'
+          ];
+
+        $data = $this->validate($request, [
+            'name' => 'required|unique:labels',
+            'description' => 'nullable',
+        ], $messages);
+
+        $label = new Label();
+        $label->fill($data)->save();
+
         flash(__('views.label.flash.store'));
         return redirect()->route('labels.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
   //  public function show(Label $label)
     //{
         //
