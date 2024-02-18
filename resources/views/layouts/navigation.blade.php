@@ -41,7 +41,7 @@
                     @if (Route::has('register') and !request()->routeIs('register'))
                         <a href="{{ route('register') }}" class="">
                             <x-primary-button>
-                                {{ __('auth.register') }}
+                                {{ __('auth.Register') }}
                             </x-primary-button>
                         </a>
                     @endif
