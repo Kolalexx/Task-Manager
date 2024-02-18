@@ -6,12 +6,17 @@
 	    {{ Session::get('errors') }}
     @endif
 
-    <h1 class="mb-5">Статусы</h1>
+    <h1 class="mb-5">{{ __('views.status.pages.index.title') }}</h1>
 
-    <div>
-        <a href="{{ route('task_statuses.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Создать статус            </a>
-    </div>
+    @auth
+        <div class="flex justify-center">
+            <a href="{{ route('task_statuses.create') }}">
+                <x-primary-button>
+                    {{ __('views.status.pages.index.new') }}
+                </x-primary-button>
+            </a>
+        </div>
+    @endauth
 
     <table class="mt-4">
         <thead class="border-b-2 border-solid border-black text-left">
