@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="mb-5">Изменение статуса</h1>
+    <h1 class="mb-5">{{ __('views.status.pages.edit.title') }}</h1>
     @if ($errors->any())
         <div>
             <ul>
@@ -23,7 +23,7 @@
                     </div>
                     <div class="text-rose-600">  </div>
                     <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 rounded">
-                        {{ Form::submit('Обновить') }}
+                        {{ Form::submit(__('views.status.pages.edit.submit')) }}
                     </a>
                 </div>
             </div>

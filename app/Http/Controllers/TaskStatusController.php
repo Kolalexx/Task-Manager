@@ -57,6 +57,7 @@ class TaskStatusController extends Controller
         ], $messages);
 
         $taskStatus->fill($data)->save();
+        flash(__('views.status.flash.update'));
         return redirect()
             ->route('task_statuses.index');
     }
