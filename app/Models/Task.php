@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\BeLongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Carbon\Carbon;
 use App\Models\Label;
@@ -22,17 +22,17 @@ class Task extends Model
         'assigned_to_id'
     ];
 
-    public function status(): BeLongsTo
+    public function status()
     {
         return $this->belongsTo(TaskStatus::class, 'status_id');
     }
 
-    public function creator(): BeLongsTo
+    public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by_id');
     }
 
-    public function executor(): BeLongsTo
+    public function executor(): BelongsTo
     {
         return $this->belongsTo(User::class, 'assigned_to_id');
     }
