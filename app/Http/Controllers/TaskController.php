@@ -109,7 +109,7 @@ class TaskController extends Controller
         $label = Label::find($labels);
         $task->labels()->sync($label);
 
-        flash(__('messages.The task has been successfully updated'))->success();
+        flash(__('views.task.flash.update'));
         return redirect()->route('tasks.index');
     }
 
