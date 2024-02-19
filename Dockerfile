@@ -20,4 +20,4 @@ RUN composer install
 RUN npm ci
 RUN npm run build
 
-CMD ["bash", "-c", "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT"]
+CMD ["bash", "-c", "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT && php artisan sentry:publish --dsn=https://453099790b75f536bb22bb345f59ca6f@o4506642425905152.ingest.sentry.io/4506771058851840"]
