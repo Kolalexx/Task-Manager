@@ -45,11 +45,6 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function id()
-    {
-        return $this->id;
-    }
-
     public function createdTasks()
     {
         return $this->hasMany(Task::class, 'created_by_id');
