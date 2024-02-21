@@ -21,5 +21,6 @@ RUN npm ci
 RUN npm run build
 RUN npm install @rails/ujs
 RUN npm install
+RUN npm run dev
 
-CMD ["bash", "-c", "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT && npm run dev"]
+CMD ["bash", "-c", "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT"]
