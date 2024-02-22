@@ -8,15 +8,19 @@
 
     <h1 class="mb-5">{{ __('views.status.pages.index.title') }}</h1>
 
-    @auth
-        <div class="flex justify-center">
-            <a href="{{ route('task_statuses.create') }}">
-                <x-primary-button>
-                    {{ __('views.status.pages.index.new') }}
-                </x-primary-button>
-            </a>
+    <div class="py-6">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            @auth
+                <div class="flex justify-center">
+                    <a href="{{ route('task_statuses.create') }}">
+                        <x-primary-button>
+                            {{ __('views.status.pages.index.new') }}
+                        </x-primary-button>
+                    </a>
+                </div>
+            @endauth
         </div>
-    @endauth
+    </div>
 
     <table class="mt-4">
         <thead class="border-b-2 border-solid border-black text-left">
