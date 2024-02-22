@@ -6,8 +6,6 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="csrf-param" content="_token" />
 
-        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
         <title>Менеджер задач</title>
 
         <!-- Fonts -->
