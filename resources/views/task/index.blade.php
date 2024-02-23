@@ -29,9 +29,6 @@
                                 <th>{{ __('views.task.fields.created_by_id') }}</th>
                                 <th>{{ __('views.task.fields.assigned_to_id') }}</th>
                                 <th>{{ __('views.task.fields.created_at') }}</th>
-                                @auth
-                                    <th>{{ __('views.actions.column_name') }}</th>
-                                @endauth
                             </tr>
                         </thead>
                         <tbody>
@@ -48,20 +45,6 @@
                                     <td>{{ $task->creator->name }}</td>
                                     <td>{{ $task->executor->name }}</td>
                                     <td>{{ $task->formattedDate }}</td>
-                                    @auth
-                                        <td>
-                                            @if (Auth::user()->name === $task->creator->name)
-                                                <a data-confirm="Вы уверены?" data-method="delete"
-                                                    class="text-red-600 hover:text-red-900"
-                                                    href="{{ route('tasks.destroy', $task->id) }}">
-                                                    Удалить</a>
-                                            @endif
-
-                                            <a
-                                                href="{{ route('tasks.edit', ['task' => $task->id]) }}">Изменить</a>
-                                        </td>
-                                    @endauth
-
                                 </tr>
                             @endforeach
                         </tbody>
