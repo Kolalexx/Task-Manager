@@ -34,8 +34,7 @@ class TaskController extends Controller
 
       //  return view('task.index', compact('tasks', 'creators', 'statuses', 'execs'));
 
-        $tasks = Task::all();
-        return view('task.index', compact('tasks'));
+        return view('task.index');
     }
 
     public function create()
