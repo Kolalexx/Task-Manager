@@ -18,22 +18,6 @@
                     </a>
                 @endauth
             </div>
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <table class="w-full">
-                        <thead class="border-b-2 border-solid border-black text-left">
-                            <tr>
-                                <th>{{ __('views.task.fields.id') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($tasks as $task)
-                                <tr class="border-b border-dashed text-left">
-                                    <td>{{ $task->id }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-            </div>
         </div>
     </div>
 @endsection
