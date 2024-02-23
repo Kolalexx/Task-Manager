@@ -33,7 +33,9 @@ class TaskController extends Controller
     //    $creators = User::pluck('name', 'id');
 
       //  return view('task.index', compact('tasks', 'creators', 'statuses', 'execs'));
-        return view('main');
+
+        $tasks = Task::all();
+        return view('task.index', compact('tasks'));
     }
 
     public function create()
