@@ -47,7 +47,7 @@
                                     <td>{{ $label->created_at }}</td>
                                     @auth
                                         <td>
-                                            <a data-confirm="__('views.actions.confirmation')" data-method="delete"
+                                            <a data-confirm="Вы уверены?" data-method="delete"
                                                 class="text-red-600 hover:text-red-900"
                                                 href="{{ route('labels.destroy', $label->id) }}">
                                                 {{ __('views.actions.delete') }} </a>

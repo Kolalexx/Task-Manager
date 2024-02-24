@@ -70,7 +70,7 @@ class TaskControllerTest extends TestCase
         $this->assertDatabaseHas('tasks', ['id' => $task->id]);
         $response = $this->delete(route('tasks.destroy', $task));
         $response->assertRedirect();
-        $this->assertDatabaseMissing('tasks', ['id' => $task->id]);
+        $this->assertSoftDeleted($task);
     }
 
     public function testGuestCanNotStore()
