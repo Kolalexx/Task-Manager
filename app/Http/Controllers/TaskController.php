@@ -20,21 +20,19 @@ class TaskController extends Controller
 
     public function index()
     {
-    //    $tasks = QueryBuilder::for(Task::class)
-      //      ->allowedFilters([
-        //        AllowedFilter::exact('status_id'),
-          //      AllowedFilter::exact('created_by_id'),
-           //     AllowedFilter::exact('assigned_to_id'),
-            //])
-            //->get();
+        $tasks = QueryBuilder::for(Task::class)
+            ->allowedFilters([
+                AllowedFilter::exact('status_id'),
+                AllowedFilter::exact('created_by_id'),
+                AllowedFilter::exact('assigned_to_id'),
+            ])
+            ->get();
 
-//        $statuses = TaskStatus::pluck('name', 'id');
-  //      $execs = User::pluck('name', 'id');
-    //    $creators = User::pluck('name', 'id');
+        $statuses = TaskStatus::pluck('name', 'id');
+        $execs = User::pluck('name', 'id');
+        $creators = User::pluck('name', 'id');
 
-      //  return view('task.index', compact('tasks', 'creators', 'statuses', 'execs'));
-
-        return view('task.index');
+        return view('task.index', compact('tasks', 'creators', 'statuses', 'execs'));
     }
 
     public function create()
