@@ -62,11 +62,11 @@
                                                 <a data-confirm="Вы уверены?" data-method="delete"
                                                     class="text-red-600 hover:text-red-900"
                                                     href="{{ route('tasks.destroy', $task->id) }}">
-                                                    Удалить</a>
+                                                    {{ __('views.actions.delete') }} </a>
                                             @endif
 
                                             <a
-                                                href="{{ route('tasks.edit', ['task' => $task->id]) }}">Изменить</a>
+                                                href="{{ route('tasks.edit', ['task' => $task->id]) }}">{{ __('views.actions.edit') }}</a>
                                         </td>
                                     @endauth
 

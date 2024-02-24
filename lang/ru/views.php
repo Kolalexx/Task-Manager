@@ -126,7 +126,7 @@ return [
         'column_name' => 'Действия',
         'edit' => 'Изменить',
         'delete' => 'Удалить',
-        'confirmationi' => 'Вы уверены?',
+        'confirmation' => 'Вы уверены?',
     ],
     'This is a simple task manager on Laravel' => 'Это простой менеджер задач на Laravel',
     'Push me' => 'Нажми меня'
