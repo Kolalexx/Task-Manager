@@ -56,6 +56,7 @@ class LabelController extends Controller
         ];
         $data = $this->validate($request, [
             'name' => 'required|max:255|unique:labels,name,' . $label->id,
+            'description' => 'nullable',
         ], $messages);
 
         $label->fill($data)->save();
