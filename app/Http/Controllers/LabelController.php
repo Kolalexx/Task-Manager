@@ -27,12 +27,12 @@ class LabelController extends Controller
     public function store(Request $request)
     {
         $messages = [
-            'name' => 'Это обязательное поле',
+            'name.required' => 'Это обязательное поле',
             'name.unique' => 'Метка с таким именем уже существует'
           ];
 
         $data = $this->validate($request, [
-            'name' => 'required|unique:labels',
+            'name' => 'required|max:255|unique:labels',
             'description' => 'nullable',
         ], $messages);
 
@@ -43,11 +43,6 @@ class LabelController extends Controller
         return redirect()->route('labels.index');
     }
 
-  //  public function show(Label $label)
-    //{
-        //
-    //}
-
     public function edit(Label $label)
     {
         return view('label.edit', compact('label'));
@@ -55,11 +50,16 @@ class LabelController extends Controller
 
     public function update(Request $request, Label $label)
     {
-        $data = $request->all();
+        $messages = [
+            'name.required' => 'Это обязательное поле',
+            'name.unique' => 'Метка с таким именем уже существует'
+        ];
+        $data = $this->validate($request, [
+            'name' => 'required|max:255|unique:labels,name,' . $label->id,
+        ], $messages);
 
-        $label->fill($data);
+        $label->fill($data)->save();
 
-        $label->save();
         flash(__('views.label.flash.update'));
         return redirect()->route('labels.index');
     }

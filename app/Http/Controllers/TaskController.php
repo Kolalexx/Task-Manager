@@ -56,7 +56,7 @@ class TaskController extends Controller
             'name' => 'required|unique:tasks',
             'description' => 'nullable',
             'status_id' => 'required',
-            'assigned_to_id' => '',
+            'assigned_to_id' => 'nullable',
         ], $messages);
 
         $task = new Task();
@@ -98,7 +98,7 @@ class TaskController extends Controller
             'name' => 'required:tasks,name,' . $task->id,
             'description' => 'nullable:tasks,description',
             'status_id' => 'required:tasks,status_id' . $task->id,
-            'assigned_to_id' => '',
+            'assigned_to_id' => 'nullable',
         ], $messages);
 
         $task->fill($data);

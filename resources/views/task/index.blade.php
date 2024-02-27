@@ -54,7 +54,7 @@
                                         </a>
                                     </td>
                                     <td>{{ $task->creator->name }}</td>
-                                    <td>{{ $task->executor->name }}</td>
+                                    <td>{{ $task->executor->name ?? ''}}</td>
                                     <td>{{ $task->formattedDate }}</td>
                                     @auth
                                         <td>
