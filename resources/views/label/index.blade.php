@@ -37,12 +37,7 @@
                             @foreach ($labels as $label)
                                 <tr class="border-b border-dashed text-left">
                                     <td>{{ $label->id }}</td>
-                                    <td>
-                                        <a class="text-blue-600 hover:text-blue-900"
-                                            href="{{ route('labels.show', ['label' => $label->id]) }}">
-                                            {{ $label->name }}
-                                        </a>
-                                    </td>
+                                    <td>{{ Str::limit($label->name, 50, '...') }}</td>
                                     <td>{{ $label->description }}</td>
                                     <td>{{ $label->created_at }}</td>
                                     @auth

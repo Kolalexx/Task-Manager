@@ -46,11 +46,11 @@
                             @foreach ($tasks as $task)
                                 <tr class="border-b border-dashed text-left">
                                     <td>{{ $task->id }}</td>
-                                    <td>{{ $task->status->name }}</td>
+                                    <td>{{ Str::limit($task->status->name, 40, '...') }}</td>
                                     <td>
                                         <a class="text-blue-600 hover:text-blue-900"
                                             href="{{ route('tasks.show', ['task' => $task->id]) }}">
-                                            {{ $task->name }}
+                                            {{ Str::limit($task->name, 40, '...') }}
                                         </a>
                                     </td>
                                     <td>{{ $task->creator->name }}</td>

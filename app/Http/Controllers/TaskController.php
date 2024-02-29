@@ -53,7 +53,7 @@ class TaskController extends Controller
             'status_id' => 'Это обязательное поле',
         ];
         $data = $this->validate($request, [
-            'name' => 'required|unique:tasks',
+            'name' => 'required|max:255|unique:tasks',
             'description' => 'nullable',
             'status_id' => 'required',
             'assigned_to_id' => 'nullable',
@@ -90,12 +90,12 @@ class TaskController extends Controller
     public function update(Request $request, Task $task)
     {
         $messages = [
-            'name' => 'Это обязательное поле',
+            'name.required' => 'Это обязательное поле',
             'status_id' => 'Это обязательное поле',
         ];
 
         $data = $this->validate($request, [
-            'name' => 'required:tasks,name,' . $task->id,
+            'name' => 'max:255|required:tasks,name,' . $task->id,
             'description' => 'nullable:tasks,description',
             'status_id' => 'required:tasks,status_id' . $task->id,
             'assigned_to_id' => 'nullable',
