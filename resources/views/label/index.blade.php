@@ -38,7 +38,7 @@
                                 <tr class="border-b border-dashed text-left">
                                     <td>{{ $label->id }}</td>
                                     <td>{{ Str::limit($label->name, 50, '...') }}</td>
-                                    <td>{{ Str::limit($label->description, 60, '...') }}</td>
+                                    <td>{{ Str::limit($label->description, 65, '...') }}</td>
                                     <td>{{ $label->created_at }}</td>
                                     @auth
                                         <td>
