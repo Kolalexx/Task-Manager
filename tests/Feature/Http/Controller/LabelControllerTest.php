@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\TaskStatus;
@@ -10,10 +9,8 @@ use App\Models\Task;
 use App\Models\Label;
 use App\Models\User;
 
-class LabelTest extends TestCase
+class LabelControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function testIndex()
     {
         $response = $this->get(route('labels.index'));

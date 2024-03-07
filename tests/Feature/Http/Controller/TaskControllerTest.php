@@ -2,16 +2,24 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\TaskStatus;
 use App\Models\Task;
 use App\Models\User;
 
 class TaskControllerTest extends TestCase
 {
-    use RefreshDatabase;
+    private User $user;
+    private Task $task;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $task = Task::factory()->make();
+        $this->user = User::factory()->create();
+        $this->task = Task::factory()->create();
+    }
 
     public function testIndex()
     {
@@ -21,99 +29,83 @@ class TaskControllerTest extends TestCase
 
     public function testShow()
     {
-        $task = Task::factory()->create();
-        $response = $this->get(route('tasks.show', $task));
+        $response = $this->get(route('tasks.show', $this->task));
         $response->assertStatus(200);
     }
 
     public function testCreate()
     {
-        $this->actingAs(User::factory()->create());
+        $this->actingAs($this->user);
         $response = $this->get(route('tasks.create'));
         $response->assertStatus(200);
     }
 
     public function testStore()
     {
-        $this->actingAs(User::factory()->create());
-        $task = Task::factory()->make();
-        $response = $this->post(route('tasks.store'), $task->toArray());
-        $this->assertDatabaseHas('tasks', $task
+        $this->actingAs($this->user);
+        $response = $this->post(route('tasks.store'), $this->task->toArray());
+        $this->assertDatabaseHas('tasks', $this->task
             ->only('name', 'description', 'status_id', 'assigned_to_id'));
         $response->assertRedirect();
     }
 
     public function testEdit()
     {
-        $task = Task::factory()->create();
-        $this->actingAs(User::factory()->create());
-        $response = $this->get(route('tasks.edit', $task));
+        $this->actingAs($this->user);
+        $response = $this->get(route('tasks.edit', $this->task));
         $response->assertStatus(200);
     }
 
     public function testUpdate()
     {
-        $this->actingAs(User::factory()->create());
-        $task = Task::factory()->create();
-        $data = $task->only(['name', 'description', 'status_id', 'assigned_to_id']);
+        $this->actingAs($this->user);
+        $data = $this->task->only(['name', 'description', 'status_id', 'assigned_to_id']);
         $response = $this
-            ->patch(route('tasks.update', $task), $data);
+            ->patch(route('tasks.update', $this->task), $data);
         $response->assertRedirect();
         $this->assertDatabaseHas('tasks', $data);
     }
 
     public function testDestroy()
     {
-        $task = Task::factory()->create();
-        $creator = User::find($task->created_by_id);
+        $creator = User::find($this->task->created_by_id);
         $this->actingAs($creator);
-        $this->assertDatabaseHas('tasks', ['id' => $task->id]);
-        $response = $this->delete(route('tasks.destroy', $task));
+        $this->assertDatabaseHas('tasks', ['id' => $this->task->id]);
+        $response = $this->delete(route('tasks.destroy', $this->task));
         $response->assertRedirect();
-        $this->assertSoftDeleted($task);
+        $this->assertSoftDeleted($this->task);
     }
 
     public function testGuestCanNotStore()
     {
-        $task = Task::factory()->make();
         $hadBeen = Task::count();
-        $response = $this->post(route('tasks.store'), $task->toArray());
+        $response = $this->post(route('tasks.store'), $this->task->toArray());
         $became = Task::count();
-
         $this->assertEquals($hadBeen, $became);
     }
 
     public function testGuestCanNotUpdate()
     {
-        $task = Task::factory()->create();
-
-        $oldValue = $task->name;
+        $oldValue = $this->task->name;
         $updatedValue = implode(' ', ["Updated Title", rand()]);
-
-        $task->name = $updatedValue;
-        $this->patch(route('tasks.update', $task), $task->toArray());
-
-        $this->assertDatabaseHas('tasks', ['id' => $task->id , 'name' => $oldValue]);
+        $this->task->name = $updatedValue;
+        $this->patch(route('tasks.update', $this->task), $this->task->toArray());
+        $this->assertDatabaseHas('tasks', ['id' => $this->task->id , 'name' => $oldValue]);
     }
 
     public function testGuestCanNotDelete()
     {
-        $task = Task::factory()->create();
-
-        $this->assertDatabaseHas('tasks', ['id' => $task->id]);
-
-        $this->delete(route('tasks.destroy', $task));
-        $this->assertDatabaseHas('tasks', ['id' => $task->id]);
+        $this->assertDatabaseHas('tasks', ['id' => $this->task->id]);
+        $this->delete(route('tasks.destroy', $this->task));
+        $this->assertDatabaseHas('tasks', ['id' => $this->task->id]);
     }
 
     public function testNotCreatorCanNotDelete()
     {
-        $task = Task::factory()->create();
-        $notCreator = User::factory()->create();
+        $notCreator = $this->user;
         $this->actingAs($notCreator);
-
-        $this->assertDatabaseHas('tasks', ['id' => $task->id]);
-        $this->delete(route('tasks.destroy', $task));
-        $this->assertDatabaseHas('tasks', ['id' => $task->id]);
+        $this->assertDatabaseHas('tasks', ['id' => $this->task->id]);
+        $this->delete(route('tasks.destroy', $this->task));
+        $this->assertDatabaseHas('tasks', ['id' => $this->task->id]);
     }
 }
