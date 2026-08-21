@@ -18,7 +18,7 @@ setup:
 	composer install
 	cp -n .env.example .env
 	php artisan key:gen --ansi
-	sudo service postgresql start
+	@if [ -z "$$CI" ]; then sudo service postgresql start; fi
 	php artisan migrate
 	php artisan db:seed
 	npm ci
