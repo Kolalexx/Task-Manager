@@ -62,9 +62,10 @@ class LabelControllerTest extends TestCase
     public function testStore()
     {
         $this->actingAs($this->user);
-        $response = $this->post(route('labels.store'), $this->label->toArray());
-        $this->assertDatabaseHas('labels', $this->label->toArray());
+        $label = Label::factory()->make(['name' => 'New Label ' . rand()]);
+        $response = $this->post(route('labels.store'), $label->toArray());
         $response->assertRedirect();
+        $this->assertDatabaseHas('labels', $label->only('name', 'description'));
     }
 
     public function testGuestCanNotStore()

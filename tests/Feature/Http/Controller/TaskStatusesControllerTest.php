@@ -62,9 +62,10 @@ class TaskStatusesControllerTest extends TestCase
     public function testStore()
     {
         $this->actingAs($this->user);
-        $response = $this->post(route('task_statuses.store'), $this->taskStatus->toArray());
-        $this->assertDatabaseHas('task_statuses', $this->taskStatus->toArray());
+        $taskStatus = TaskStatus::factory()->make();
+        $response = $this->post(route('task_statuses.store'), $taskStatus->toArray());
         $response->assertRedirect();
+        $this->assertDatabaseHas('task_statuses', $taskStatus->only('name'));
     }
 
     public function testGuestCanNotStore()
