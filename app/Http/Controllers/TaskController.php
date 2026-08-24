@@ -9,6 +9,7 @@ use App\Models\TaskStatus;
 use App\Models\User;
 use App\Models\Label;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Spatie\QueryBuilder\AllowedFilter;
 
 class TaskController extends Controller
@@ -26,6 +27,7 @@ class TaskController extends Controller
                 AllowedFilter::exact('created_by_id'),
                 AllowedFilter::exact('assigned_to_id'),
             ])
+            ->with(['status', 'creator', 'executor'])
             ->get();
 
         $statuses = TaskStatus::pluck('name', 'id');
@@ -50,7 +52,7 @@ class TaskController extends Controller
         $messages = [
             'name.required' => 'Это обязательное поле',
             'name.unique' => 'Задача с таким именем уже существует',
-            'status_id' => 'Это обязательное поле',
+            'status_id.required' => 'Это обязательное поле',
         ];
         $data = $this->validate($request, [
             'name' => 'required|max:255|unique:tasks',
@@ -91,13 +93,14 @@ class TaskController extends Controller
     {
         $messages = [
             'name.required' => 'Это обязательное поле',
-            'status_id' => 'Это обязательное поле',
+            'name.unique' => 'Задача с таким именем уже существует',
+            'status_id.required' => 'Это обязательное поле',
         ];
 
         $data = $this->validate($request, [
-            'name' => 'max:255|required:tasks,name,' . $task->id,
-            'description' => 'nullable:tasks,description',
-            'status_id' => 'required:tasks,status_id' . $task->id,
+            'name' => ['required', 'max:255', Rule::unique('tasks')->ignore($task->id)],
+            'description' => 'nullable',
+            'status_id' => 'required',
             'assigned_to_id' => 'nullable',
         ], $messages);
 

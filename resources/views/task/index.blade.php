@@ -1,8 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-    @if (Session::has('errors'))
-	    {{ Session::get('errors') }}
+    @if ($errors->any())
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
     @endif
 
     <h1 class="mb-5">{{ __('views.task.pages.index.title') }}</h1>
