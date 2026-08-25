@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskStatusStoreRequest;
+use App\Http\Requests\TaskStatusUpdateRequest;
 use App\Models\TaskStatus;
-use Illuminate\Http\Request;
 
 class TaskStatusController extends Controller
 {
@@ -24,18 +25,10 @@ class TaskStatusController extends Controller
         return view('task_status.create', compact('status'));
     }
 
-    public function store(Request $request)
+    public function store(TaskStatusStoreRequest $request)
     {
-        $messages = [
-            'name.required' => 'Это обязательное поле',
-            'name.unique' => 'Статус с таким именем уже существует'
-        ];
-        $data = $this->validate($request, [
-            'name' => 'required|max:255|unique:task_statuses',
-        ], $messages);
-
         $status = new TaskStatus();
-        $status->fill($data)->save();
+        $status->fill($request->validated())->save();
 
         flash(__('views.status.flash.store'));
         return redirect()->route('task_statuses.index');
@@ -46,17 +39,9 @@ class TaskStatusController extends Controller
         return view('task_status.edit', compact('taskStatus'));
     }
 
-    public function update(Request $request, TaskStatus $taskStatus)
+    public function update(TaskStatusUpdateRequest $request, TaskStatus $taskStatus)
     {
-        $messages = [
-            'name.required' => 'Это обязательное поле',
-            'name.unique' => 'Статус с таким именем уже существует'
-        ];
-        $data = $this->validate($request, [
-            'name' => 'required|max:255|unique:task_statuses,name,' . $taskStatus->id,
-        ], $messages);
-
-        $taskStatus->fill($data)->save();
+        $taskStatus->fill($request->validated())->save();
         flash(__('views.status.flash.update'));
         return redirect()
             ->route('task_statuses.index');

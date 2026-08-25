@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LabelStoreRequest;
+use App\Http\Requests\LabelUpdateRequest;
 use App\Models\Label;
-use Illuminate\Http\Request;
 
 class LabelController extends Controller
 {
@@ -24,20 +25,10 @@ class LabelController extends Controller
         return view('label.create', compact('label'));
     }
 
-    public function store(Request $request)
+    public function store(LabelStoreRequest $request)
     {
-        $messages = [
-            'name.required' => 'Это обязательное поле',
-            'name.unique' => 'Метка с таким именем уже существует'
-          ];
-
-        $data = $this->validate($request, [
-            'name' => 'required|max:255|unique:labels',
-            'description' => 'nullable',
-        ], $messages);
-
         $label = new Label();
-        $label->fill($data)->save();
+        $label->fill($request->validated())->save();
 
         flash(__('views.label.flash.store'));
         return redirect()->route('labels.index');
@@ -48,18 +39,9 @@ class LabelController extends Controller
         return view('label.edit', compact('label'));
     }
 
-    public function update(Request $request, Label $label)
+    public function update(LabelUpdateRequest $request, Label $label)
     {
-        $messages = [
-            'name.required' => 'Это обязательное поле',
-            'name.unique' => 'Метка с таким именем уже существует'
-        ];
-        $data = $this->validate($request, [
-            'name' => 'required|max:255|unique:labels,name,' . $label->id,
-            'description' => 'nullable',
-        ], $messages);
-
-        $label->fill($data)->save();
+        $label->fill($request->validated())->save();
 
         flash(__('views.label.flash.update'));
         return redirect()->route('labels.index');

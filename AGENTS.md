@@ -14,7 +14,7 @@
 - Тесты работают на SQLite в памяти (принудительно задано в `phpunit.xml`) — **PostgreSQL для запуска тестов не нужен**. Для локальной разработки Postgres требуется; `make start-db` использует `sudo service postgresql start` (только Linux, на macOS не работает).
 - Тесты есть только в наборе `Feature`; набор `Unit` пуст. Используйте `--testsuite=Feature`.
 - Приложение локализовано на русский: `config/app.php` задаёт `locale`/`fallback_locale` = `ru`. Строки UI берутся из `lang/ru/views.php` через `__('views.task...')`. В `lang/en` **нет** `views.php` — новые ключи `views.*` нужно добавлять в `lang/ru/views.php`, иначе они не отобразятся.
-- Валидация форм — инлайн в контроллерах через `$this->validate()` с захардкоженными русскими сообщениями (не Form Requests); исключение — `ProfileUpdateRequest` от Breeze.
+- Валидация форм — в Form Requests (`app/Http/Requests`, по классу на `store` и `update` каждого ресурса) с русскими сообщениями в методе `messages()`. `ProfileUpdateRequest` — от Breeze. `authorize()` в них не задан: права проверяются политиками через `$this->authorizeResource()`.
 - Ресурсные маршруты в snake_case: `tasks`, `task_statuses`, `labels` (имена маршрутов `task_statuses.index` и т.д.). Контроллеры вызывают `$this->authorizeResource()`; политики лежат в `app/Policies`.
 - `Task` использует `SoftDeletes` — feature-тест на удаление проверяет `assertSoftDeleted`.
 - Фабрики автосоздают связанные записи (например, `TaskFactory` создаёт `TaskStatus` и двух `User`), поэтому сидирование в тестах не требуется.

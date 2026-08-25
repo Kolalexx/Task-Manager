@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskStoreRequest;
+use App\Http\Requests\TaskUpdateRequest;
 use App\Models\Task;
-use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 use App\Models\TaskStatus;
 use App\Models\User;
 use App\Models\Label;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
 use Spatie\QueryBuilder\AllowedFilter;
 
 class TaskController extends Controller
@@ -47,22 +47,10 @@ class TaskController extends Controller
         return view('task.create', compact('task', 'statuses', 'execs', 'labels'));
     }
 
-    public function store(Request $request)
+    public function store(TaskStoreRequest $request)
     {
-        $messages = [
-            'name.required' => 'Это обязательное поле',
-            'name.unique' => 'Задача с таким именем уже существует',
-            'status_id.required' => 'Это обязательное поле',
-        ];
-        $data = $this->validate($request, [
-            'name' => 'required|max:255|unique:tasks',
-            'description' => 'nullable',
-            'status_id' => 'required',
-            'assigned_to_id' => 'nullable',
-        ], $messages);
-
         $task = new Task();
-        $task->fill($data);
+        $task->fill($request->validated());
         $task->created_by_id = (int) Auth::id();
         $task->save();
         $labels = collect($request->input('labels'))
@@ -89,22 +77,9 @@ class TaskController extends Controller
         return view('task.edit', compact('task', 'statuses', 'execs', 'labels'));
     }
 
-    public function update(Request $request, Task $task)
+    public function update(TaskUpdateRequest $request, Task $task)
     {
-        $messages = [
-            'name.required' => 'Это обязательное поле',
-            'name.unique' => 'Задача с таким именем уже существует',
-            'status_id.required' => 'Это обязательное поле',
-        ];
-
-        $data = $this->validate($request, [
-            'name' => ['required', 'max:255', Rule::unique('tasks')->ignore($task->id)],
-            'description' => 'nullable',
-            'status_id' => 'required',
-            'assigned_to_id' => 'nullable',
-        ], $messages);
-
-        $task->fill($data);
+        $task->fill($request->validated());
         $task->save();
 
         $labels = collect($request->input('labels'))
