@@ -10,6 +10,11 @@
 - `make start-frontend` — `npm run dev` (Vite/Tailwind)
 - `make prepare-db` — `php artisan migrate:fresh --seed`
 
+## CI/CD
+- Репозиторий размещён на GitHub: https://github.com/Kolalexx/Task-Manager.
+- При каждом push GitHub Actions запускает проверки (`.github/workflows/testAndLint.yml` — `make setup`: phpcs + feature-тесты, Postgres поднимается как service-контейнер). Файл `hexlet-check.yml` — проверка проекта Hexlet.
+- В случае успеха проверок проект автоматически деплоится на render.com.
+
 ## Важные особенности
 - Тесты работают на SQLite в памяти (принудительно задано в `phpunit.xml`) — **PostgreSQL для запуска тестов не нужен**. Для локальной разработки Postgres требуется; `make start-db` использует `sudo service postgresql start` (только Linux, на macOS не работает).
 - Тесты есть только в наборе `Feature`; набор `Unit` пуст. Используйте `--testsuite=Feature`.
