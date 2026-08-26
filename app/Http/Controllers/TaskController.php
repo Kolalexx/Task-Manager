@@ -30,9 +30,9 @@ class TaskController extends Controller
             ->with(['status', 'creator', 'executor'])
             ->get();
 
-        $statuses = TaskStatus::pluck('name', 'id');
-        $execs = User::pluck('name', 'id');
-        $creators = User::pluck('name', 'id');
+        $statuses = TaskStatus::options();
+        $execs = User::options();
+        $creators = User::options();
 
         return view('task.index', compact('tasks', 'creators', 'statuses', 'execs'));
     }
@@ -40,9 +40,9 @@ class TaskController extends Controller
     public function create()
     {
         $task = new Task();
-        $statuses = TaskStatus::pluck('name', 'id');
-        $execs = User::pluck('name', 'id');
-        $labels = Label::pluck('name', 'id');
+        $statuses = TaskStatus::options();
+        $execs = User::options();
+        $labels = Label::options();
 
         return view('task.create', compact('task', 'statuses', 'execs', 'labels'));
     }
@@ -53,10 +53,7 @@ class TaskController extends Controller
         $task->fill($request->validated());
         $task->created_by_id = (int) Auth::id();
         $task->save();
-        $labels = collect($request->input('labels'))
-            ->filter(fn($label) => $label !== null);
-        $label = Label::find($labels);
-        $task->labels()->attach($label);
+        $task->labels()->attach($request->validated('labels') ?? []);
 
         flash(__('views.task.flash.store'));
         return redirect()->route('tasks.index');
@@ -70,9 +67,9 @@ class TaskController extends Controller
 
     public function edit(Task $task)
     {
-        $statuses = TaskStatus::pluck('name', 'id');
-        $execs = User::pluck('name', 'id');
-        $labels = Label::pluck('name', 'id');
+        $statuses = TaskStatus::options();
+        $execs = User::options();
+        $labels = Label::options();
 
         return view('task.edit', compact('task', 'statuses', 'execs', 'labels'));
     }
@@ -81,11 +78,7 @@ class TaskController extends Controller
     {
         $task->fill($request->validated());
         $task->save();
-
-        $labels = collect($request->input('labels'))
-            ->filter(fn($label) => $label !== null);
-        $label = Label::find($labels);
-        $task->labels()->sync($label);
+        $task->labels()->sync($request->validated('labels') ?? []);
 
         flash(__('views.task.flash.update'));
         return redirect()->route('tasks.index');

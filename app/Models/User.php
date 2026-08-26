@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -45,13 +46,18 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function createdTasks()
+    public function createdTasks(): HasMany
     {
         return $this->hasMany(Task::class, 'created_by_id');
     }
 
-    public function assignedTasks()
+    public function assignedTasks(): HasMany
     {
         return $this->hasMany(Task::class, 'assigned_to_id');
+    }
+
+    public static function options(): Collection
+    {
+        return static::orderBy('name')->pluck('name', 'id');
     }
 }

@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Carbon\Carbon;
-use App\Models\Label;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Task extends Model
@@ -24,7 +22,7 @@ class Task extends Model
         'assigned_to_id'
     ];
 
-    public function status()
+    public function status(): BelongsTo
     {
         return $this->belongsTo(TaskStatus::class, 'status_id');
     }
@@ -47,7 +45,7 @@ class Task extends Model
     protected function formattedDate(): Attribute
     {
         return Attribute::make(
-            get: fn() => Carbon::parse($this->created_at)->format('d.m.Y'),
+            get: fn() => $this->created_at->format('d.m.Y'),
         );
     }
 }
