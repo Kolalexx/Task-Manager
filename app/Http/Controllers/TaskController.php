@@ -28,7 +28,8 @@ class TaskController extends Controller
                 AllowedFilter::exact('assigned_to_id'),
             ])
             ->with(['status', 'creator', 'executor'])
-            ->get();
+            ->paginate()
+            ->withQueryString();
 
         $statuses = TaskStatus::options();
         $execs = User::options();

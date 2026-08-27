@@ -31,7 +31,7 @@ class TaskPolicy
      */
     public function create(User $user): bool
     {
-        return (bool)$user;
+        return true;
     }
 
     /**
@@ -39,7 +39,7 @@ class TaskPolicy
      */
     public function update(User $user, Task $task): bool
     {
-        return (bool)$user;
+        return true;
     }
 
     /**

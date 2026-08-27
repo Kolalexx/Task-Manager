@@ -50,7 +50,7 @@ class TaskStatusController extends Controller
     public function destroy(TaskStatus $taskStatus)
     {
         if ($taskStatus->tasks()->exists()) {
-            flash(__('views.status.flash.destroy.fail.constraint'))->error();
+            flash(__('views.status.flash.destroy.constraint'))->error();
             return back();
         }
 

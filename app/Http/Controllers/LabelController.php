@@ -50,7 +50,7 @@ class LabelController extends Controller
     public function destroy(Label $label)
     {
         if ($label->tasks()->exists()) {
-            flash(__('views.label.flash.destroy.fail.constraint'));
+            flash(__('views.label.flash.destroy.constraint'));
         } else {
             $label->delete();
             flash(__('views.label.flash.destroy.success'));

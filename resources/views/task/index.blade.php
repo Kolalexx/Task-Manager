@@ -62,12 +62,12 @@
                                     <td>{{ $task->formattedDate }}</td>
                                     @auth
                                         <td>
-                                            @if (Auth::user()->name === $task->creator->name)
+                                            @can('delete', $task)
                                                 <a data-confirm="Вы уверены?" data-method="delete"
                                                     class="text-red-600 hover:text-red-900"
                                                     href="{{ route('tasks.destroy', $task->id) }}">
                                                     {{ __('views.actions.delete') }} </a>
-                                            @endif
+                                            @endcan
 
                                             <a
                                                 href="{{ route('tasks.edit', ['task' => $task->id]) }}">{{ __('views.actions.edit') }}</a>
@@ -78,6 +78,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    {{ $tasks->links() }}
                 </div>
             </div>
         </div>

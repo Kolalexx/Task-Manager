@@ -52,9 +52,9 @@
                         @endauth
                     </tr>
                     @endforeach
-                    {{ $statuses->links() }}
                 </tbody>
             </table>
+            {{ $statuses->links() }}
         </div>
     </div>
 @endsection

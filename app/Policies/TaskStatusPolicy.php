@@ -23,7 +23,7 @@ class TaskStatusPolicy
      */
     public function create(User $user): bool
     {
-        return (bool)$user;
+        return true;
     }
 
     /**
@@ -31,7 +31,7 @@ class TaskStatusPolicy
      */
     public function update(User $user, TaskStatus $taskStatus): bool
     {
-        return (bool)$user;
+        return true;
     }
 
     /**
@@ -39,6 +39,6 @@ class TaskStatusPolicy
      */
     public function delete(User $user, TaskStatus $taskStatus): bool
     {
-        return (bool)$user;
+        return true;
     }
 }
