@@ -18,7 +18,7 @@
                     <div class="flex justify-center gap-x-2">
                         <x-select-input-block entity="task" name="filter[status_id]" :items="$statuses" />
                         <x-select-input-block entity="task" name="filter[created_by_id]" :items="$creators" />
-                        <x-select-input-block entity="task" name="filter[assigned_to_id]" :items="$execs" />
+                        <x-select-input-block entity="task" name="filter[assigned_to_id]" :items="$executors" />
                         <x-submit entity="task" type="filter" class="flex flex-col justify-end" />
                     </div>
                 </form>

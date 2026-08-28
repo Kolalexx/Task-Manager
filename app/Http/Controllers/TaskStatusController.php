@@ -23,14 +23,14 @@ class TaskStatusController extends Controller
 
     public function create(): View
     {
-        $status = new TaskStatus();
-        return view('task_status.create', compact('status'));
+        $taskStatus = new TaskStatus();
+        return view('task_status.create', compact('taskStatus'));
     }
 
     public function store(TaskStatusStoreRequest $request): RedirectResponse
     {
-        $status = new TaskStatus();
-        $status->fill($request->validated())->save();
+        $taskStatus = new TaskStatus();
+        $taskStatus->fill($request->validated())->save();
 
         flash(__('views.status.flash.store'));
         return redirect()->route('task_statuses.index');

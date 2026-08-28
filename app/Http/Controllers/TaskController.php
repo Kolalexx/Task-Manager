@@ -34,20 +34,20 @@ class TaskController extends Controller
             ->withQueryString();
 
         $statuses = TaskStatus::options();
-        $execs = User::options();
+        $executors = User::options();
         $creators = User::options();
 
-        return view('task.index', compact('tasks', 'creators', 'statuses', 'execs'));
+        return view('task.index', compact('tasks', 'creators', 'statuses', 'executors'));
     }
 
     public function create(): View
     {
         $task = new Task();
         $statuses = TaskStatus::options();
-        $execs = User::options();
+        $executors = User::options();
         $labels = Label::options();
 
-        return view('task.create', compact('task', 'statuses', 'execs', 'labels'));
+        return view('task.create', compact('task', 'statuses', 'executors', 'labels'));
     }
 
     public function store(TaskStoreRequest $request): RedirectResponse
@@ -71,10 +71,10 @@ class TaskController extends Controller
     public function edit(Task $task): View
     {
         $statuses = TaskStatus::options();
-        $execs = User::options();
+        $executors = User::options();
         $labels = Label::options();
 
-        return view('task.edit', compact('task', 'statuses', 'execs', 'labels'));
+        return view('task.edit', compact('task', 'statuses', 'executors', 'labels'));
     }
 
     public function update(TaskUpdateRequest $request, Task $task): RedirectResponse

@@ -19,7 +19,7 @@
                 <x-text-input-block entity="task" name="name" :model="$task" required autofocus />
                 <x-text-input-block entity="task" name="description" :model="$task" />
                 <x-select-input-block entity="task" name="status_id" :items="$statuses" :model="$task" required />
-                <x-select-input-block entity="task" name="assigned_to_id" :items="$execs" :model="$task" required />
+                <x-select-input-block entity="task" name="assigned_to_id" :items="$executors" :model="$task" required />
                 <x-select-input-block entity="task" name="labels" :items="$labels" :model="$task" multiple />
                 <x-submit entity="task" type="edit" />
             </form>

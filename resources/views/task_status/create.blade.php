@@ -20,7 +20,7 @@
                 </div>
                 <div class="mt-2">
                     <div class="rounded border-gray-300 w-1/3">
-                        <input type="text" id="name" name="name" value="{{ old('name', $status->name) }}"><br>
+                        <input type="text" id="name" name="name" value="{{ old('name', $taskStatus->name) }}"><br>
                     </div>
                     <div class="text-rose-600"></div>
                     <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 rounded">
