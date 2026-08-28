@@ -52,11 +52,12 @@ class LabelController extends Controller
     public function destroy(Label $label): RedirectResponse
     {
         if ($label->tasks()->exists()) {
-            flash(__('views.label.flash.destroy.constraint'));
-        } else {
-            $label->delete();
-            flash(__('views.label.flash.destroy.success'));
+            flash(__('views.label.flash.destroy.constraint'))->error();
+            return back();
         }
+
+        $label->delete();
+        flash(__('views.label.flash.destroy.success'))->success();
         return redirect()->route('labels.index');
     }
 }
