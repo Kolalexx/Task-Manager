@@ -45,7 +45,7 @@ class Task extends Model
     protected function formattedDate(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->created_at->format('d.m.Y'),
+            get: fn() => $this->created_at?->format('d.m.Y'),
         );
     }
 }
