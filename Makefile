@@ -4,6 +4,8 @@ install:
 	composer install
 lint:
 	composer exec --verbose phpcs -- --standard=PSR12 app routes tests
+phpstan:
+	composer exec -- phpstan analyse --memory-limit=512M
 test:
 	php artisan test --testsuite=Feature
 key:
@@ -24,4 +26,5 @@ setup:
 	npm ci
 	npm run build
 	composer exec --verbose phpcs -- --standard=PSR12 app routes tests
+	composer exec -- phpstan analyse --memory-limit=512M
 	php artisan test --testsuite=Feature
