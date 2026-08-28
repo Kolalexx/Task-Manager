@@ -11,7 +11,6 @@ use App\Models\User;
 use App\Models\Label;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\AllowedFilter;
 
 class TaskController extends Controller
@@ -52,11 +51,13 @@ class TaskController extends Controller
 
     public function store(TaskStoreRequest $request): RedirectResponse
     {
+        $labels = $request->validated('labels') ?? [];
+
         $task = new Task();
         $task->fill($request->validated());
-        $task->created_by_id = (int) Auth::id();
+        $task->created_by_id = $request->user()->id;
         $task->save();
-        $task->labels()->attach($request->validated('labels') ?? []);
+        $task->labels()->attach($labels);
 
         flash(__('views.task.flash.store'));
         return redirect()->route('tasks.index');
@@ -79,9 +80,11 @@ class TaskController extends Controller
 
     public function update(TaskUpdateRequest $request, Task $task): RedirectResponse
     {
+        $labels = $request->validated('labels') ?? [];
+
         $task->fill($request->validated());
         $task->save();
-        $task->labels()->sync($request->validated('labels') ?? []);
+        $task->labels()->sync($labels);
 
         flash(__('views.task.flash.update'));
         return redirect()->route('tasks.index');
