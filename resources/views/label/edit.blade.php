@@ -12,14 +12,12 @@
         </div>
     @endif
     <x-form-card>
-        {{ Form::model($label, [
-            'route' => ['labels.update', $label->id],
-            'method' => 'PATCH',
-            'class' => 'flex flex-col gap-3',
-        ]) }}
-        <x-text-input-block entity="label" name="name" autofocus />
-        <x-text-input-block entity="label" name="description" />
-        <x-submit entity="label" type="edit" />
-        {{ Form::close() }}
+        <form method="POST" action="{{ route('labels.update', $label) }}" class="flex flex-col gap-3">
+            @csrf
+            @method('PATCH')
+            <x-text-input-block entity="label" name="name" :model="$label" autofocus />
+            <x-text-input-block entity="label" name="description" :model="$label" />
+            <x-submit entity="label" type="edit" />
+        </form>
     </x-form-card>
 @endsection

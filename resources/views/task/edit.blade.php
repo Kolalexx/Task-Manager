@@ -13,16 +13,16 @@
     @endif
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <x-form-card>
-            {{ Form::model($task, ['route' => ['tasks.update', 'task' => $task], 'method' => 'PATCH']) }}
-            <div class="">
-                <x-text-input-block entity="task" name="name" :items=$statuses required autofocus />
-                <x-text-input-block entity="task" name="description" :items=$statuses />
-                <x-select-input-block entity="task" name="status_id" :items=$statuses required />
-                <x-select-input-block entity="task" name="assigned_to_id" :items=$execs required />
-                <x-select-input-block entity="task" name="labels" :items=$labels multiple />
+            <form method="POST" action="{{ route('tasks.update', $task) }}" class="flex flex-col gap-3">
+                @csrf
+                @method('PATCH')
+                <x-text-input-block entity="task" name="name" :model="$task" required autofocus />
+                <x-text-input-block entity="task" name="description" :model="$task" />
+                <x-select-input-block entity="task" name="status_id" :items="$statuses" :model="$task" required />
+                <x-select-input-block entity="task" name="assigned_to_id" :items="$execs" :model="$task" required />
+                <x-select-input-block entity="task" name="labels" :items="$labels" :model="$task" multiple />
                 <x-submit entity="task" type="edit" />
-            </div>
-            {{ Form::close() }}
+            </form>
         </x-form-card>
     </div>
 

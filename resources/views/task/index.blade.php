@@ -14,14 +14,14 @@
     <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="flex justify-between">
-                {{ Form::open(['route' => ['tasks.index'], 'method' => 'GET']) }}
+                <form method="GET" action="{{ route('tasks.index') }}">
                     <div class="flex justify-center gap-x-2">
-                        <x-select-input-block entity="task" name="filter[status_id]" :items=$statuses label=0 />
-                        <x-select-input-block entity="task" name="filter[created_by_id]" :items=$creators label=0 />
-                        <x-select-input-block entity="task" name="filter[assigned_to_id]" :items=$execs label=0 />
+                        <x-select-input-block entity="task" name="filter[status_id]" :items="$statuses" />
+                        <x-select-input-block entity="task" name="filter[created_by_id]" :items="$creators" />
+                        <x-select-input-block entity="task" name="filter[assigned_to_id]" :items="$execs" />
                         <x-submit entity="task" type="filter" class="flex flex-col justify-end" />
                     </div>
-                {{ Form::close() }}
+                </form>
                 @auth
                     <a href="{{ route('tasks.create') }}">
                         <x-primary-button>

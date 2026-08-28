@@ -12,22 +12,23 @@
         </div>
     @endif
     <div class="w-50">
-        {{ Form::model($status, ['route' => 'task_statuses.store']) }}
+        <form method="POST" action="{{ route('task_statuses.store') }}">
+            @csrf
             <div class="flex flex-col">
                 <div>
-                    {{ Form::label('name', 'Имя') }}
+                    <label for="name">Имя</label>
                 </div>
                 <div class="mt-2">
                     <div class="rounded border-gray-300 w-1/3">
-                        {{ Form::text('name') }}<br>
+                        <input type="text" id="name" name="name" value="{{ old('name', $status->name) }}"><br>
                     </div>
-                    <div class="text-rose-600">  </div>
-                    <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 rounded">
-                        {{ Form::submit('Создать') }}
-                    </a>
+                    <div class="text-rose-600"></div>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 rounded">
+                        Создать
+                    </button>
                 </div>
             </div>
-        {{ Form::close() }}
+        </form>
     </div>
 
 @endsection

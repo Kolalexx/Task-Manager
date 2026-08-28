@@ -12,14 +12,15 @@
         </div>
     @endif
     <x-form-card>
-        {{ Form::model($task, ['route' => 'tasks.store', 'class' => 'flex flex-col gap-3']) }}
-        <x-text-input-block entity="task" name="name" autofocus />
-        <x-text-input-block entity="task" name="description" />
-        <x-select-input-block entity="task" name="status_id" :items=$statuses />
-        <x-select-input-block entity="task" name="assigned_to_id" :items=$execs />
-        <x-select-input-block entity="task" name="labels" :items=$labels multiple />
-        <x-submit entity="task" type="create" />
-        {{ Form::close() }}
+        <form method="POST" action="{{ route('tasks.store') }}" class="flex flex-col gap-3">
+            @csrf
+            <x-text-input-block entity="task" name="name" :model="$task" autofocus />
+            <x-text-input-block entity="task" name="description" :model="$task" />
+            <x-select-input-block entity="task" name="status_id" :items="$statuses" :model="$task" />
+            <x-select-input-block entity="task" name="assigned_to_id" :items="$execs" :model="$task" />
+            <x-select-input-block entity="task" name="labels" :items="$labels" :model="$task" multiple />
+            <x-submit entity="task" type="create" />
+        </form>
     </x-form-card>
 
 @endsection
