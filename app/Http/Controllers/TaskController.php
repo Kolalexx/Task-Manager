@@ -9,6 +9,8 @@ use Spatie\QueryBuilder\QueryBuilder;
 use App\Models\TaskStatus;
 use App\Models\User;
 use App\Models\Label;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\AllowedFilter;
 
@@ -19,7 +21,7 @@ class TaskController extends Controller
         $this->authorizeResource(Task::class);
     }
 
-    public function index()
+    public function index(): View
     {
         $tasks = QueryBuilder::for(Task::class)
             ->allowedFilters([
@@ -38,7 +40,7 @@ class TaskController extends Controller
         return view('task.index', compact('tasks', 'creators', 'statuses', 'execs'));
     }
 
-    public function create()
+    public function create(): View
     {
         $task = new Task();
         $statuses = TaskStatus::options();
@@ -48,7 +50,7 @@ class TaskController extends Controller
         return view('task.create', compact('task', 'statuses', 'execs', 'labels'));
     }
 
-    public function store(TaskStoreRequest $request)
+    public function store(TaskStoreRequest $request): RedirectResponse
     {
         $task = new Task();
         $task->fill($request->validated());
@@ -60,13 +62,13 @@ class TaskController extends Controller
         return redirect()->route('tasks.index');
     }
 
-    public function show(Task $task)
+    public function show(Task $task): View
     {
         $labels = $task->labels;
         return view('task.show', compact('task', 'labels'));
     }
 
-    public function edit(Task $task)
+    public function edit(Task $task): View
     {
         $statuses = TaskStatus::options();
         $execs = User::options();
@@ -75,7 +77,7 @@ class TaskController extends Controller
         return view('task.edit', compact('task', 'statuses', 'execs', 'labels'));
     }
 
-    public function update(TaskUpdateRequest $request, Task $task)
+    public function update(TaskUpdateRequest $request, Task $task): RedirectResponse
     {
         $task->fill($request->validated());
         $task->save();
@@ -85,7 +87,7 @@ class TaskController extends Controller
         return redirect()->route('tasks.index');
     }
 
-    public function destroy(Task $task)
+    public function destroy(Task $task): RedirectResponse
     {
         $task->delete();
         flash(__('views.task.flash.destroy.success'));

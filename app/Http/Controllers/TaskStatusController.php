@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TaskStatusStoreRequest;
 use App\Http\Requests\TaskStatusUpdateRequest;
 use App\Models\TaskStatus;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class TaskStatusController extends Controller
 {
@@ -13,19 +15,19 @@ class TaskStatusController extends Controller
         $this->authorizeResource(TaskStatus::class);
     }
 
-    public function index()
+    public function index(): View
     {
         $statuses = TaskStatus::paginate();
         return view('task_status.index', compact('statuses'));
     }
 
-    public function create()
+    public function create(): View
     {
         $status = new TaskStatus();
         return view('task_status.create', compact('status'));
     }
 
-    public function store(TaskStatusStoreRequest $request)
+    public function store(TaskStatusStoreRequest $request): RedirectResponse
     {
         $status = new TaskStatus();
         $status->fill($request->validated())->save();
@@ -34,12 +36,12 @@ class TaskStatusController extends Controller
         return redirect()->route('task_statuses.index');
     }
 
-    public function edit(TaskStatus $taskStatus)
+    public function edit(TaskStatus $taskStatus): View
     {
         return view('task_status.edit', compact('taskStatus'));
     }
 
-    public function update(TaskStatusUpdateRequest $request, TaskStatus $taskStatus)
+    public function update(TaskStatusUpdateRequest $request, TaskStatus $taskStatus): RedirectResponse
     {
         $taskStatus->fill($request->validated())->save();
         flash(__('views.status.flash.update'));
@@ -47,7 +49,7 @@ class TaskStatusController extends Controller
             ->route('task_statuses.index');
     }
 
-    public function destroy(TaskStatus $taskStatus)
+    public function destroy(TaskStatus $taskStatus): RedirectResponse
     {
         if ($taskStatus->tasks()->exists()) {
             flash(__('views.status.flash.destroy.constraint'))->error();
