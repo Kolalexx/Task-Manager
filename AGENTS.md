@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Приложение на Laravel 10 — «Менеджер задач» (учебный проект Hexlet). Монолит. Язык интерфейса — русский.
+Приложение на Laravel 12 — «Менеджер задач» (учебный проект Hexlet). Монолит. Язык интерфейса — русский. Требуется PHP ^8.2.
 
 ## Команды (Makefile — источник истины)
 - `make setup` — полная настройка: composer install, копирование `.env`, key:gen, migrate, seed, npm ci, `npm run build`, lint, phpstan, feature-тесты. Пропускает запуск PostgreSQL, если задан `CI`.
@@ -17,6 +17,7 @@
 - В случае успеха проверок проект автоматически деплоится на render.com.
 
 ## Важные особенности
+- Структура приложения — Laravel 11+/12: конфигурация в `bootstrap/app.php` (`withRouting`/`withMiddleware`/`withExceptions`), провайдеры — в `bootstrap/providers.php`, политики регистрируются явно через `Gate::policy()` в `AppServiceProvider::boot()`. Классические `Http/Console Kernel`, `Exceptions/Handler`, `RouteServiceProvider` отсутствуют.
 - Тесты работают на SQLite в памяти (принудительно задано в `phpunit.xml`) — **PostgreSQL для запуска тестов не нужен**. Для локальной разработки Postgres требуется; `make start-db` использует `sudo service postgresql start` (только Linux, на macOS не работает).
 - Тесты есть только в наборе `Feature`; набор `Unit` пуст. Используйте `--testsuite=Feature`.
 - Приложение локализовано на русский: `config/app.php` задаёт `locale`/`fallback_locale` = `ru`. Строки UI берутся из `lang/ru/views.php` через `__('views.task...')`. В `lang/en` **нет** `views.php` — новые ключи `views.*` нужно добавлять в `lang/ru/views.php`, иначе они не отобразятся.
