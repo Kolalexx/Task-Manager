@@ -12,7 +12,7 @@ use App\Http\Controllers\LabelController;
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
+| routes are loaded by the bootstrap/app.php file and all of them will
 | be assigned to the "web" middleware group. Make something great!
 |
 */

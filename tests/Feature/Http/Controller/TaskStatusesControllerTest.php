@@ -5,7 +5,6 @@ namespace Tests\Feature\Http\Controller;
 use App\Models\TaskStatus;
 use App\Models\User;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 
 class TaskStatusesControllerTest extends TestCase
 {
