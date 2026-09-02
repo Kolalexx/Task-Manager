@@ -26,7 +26,7 @@ return [
     'forgot' => 'Забыли пароль?',
     'Password' => 'Пароль',
     'Confirm Password' => 'Подтверждение',
-    'Email' => 'Email',
+    'Email' => 'Электронная почта',
     'Name' => 'Имя',
     'Already registered?' => 'Уже зарегистрированы?',
     'labels' => [
