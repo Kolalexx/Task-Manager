@@ -1,7 +1,7 @@
-@props(['entity', 'name', 'items' => [], 'multiple' => false, 'required' => false, 'autofocus' => false, 'model' => null])
+@props(['entity', 'name', 'items' => [], 'multiple' => false, 'required' => false, 'autofocus' => false, 'model' => null, 'selected' => null])
 
 @php
-    $selected = old($name, $model?->$name);
+    $selected = old($name, $selected ?? $model?->$name);
     if ($selected instanceof \Illuminate\Support\Collection) {
         $selected = $selected->modelKeys();
     }

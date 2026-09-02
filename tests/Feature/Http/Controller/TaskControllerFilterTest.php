@@ -64,6 +64,18 @@ class TaskControllerFilterTest extends TestCase
         $response->assertDontSee('Задача вне фильтра');
     }
 
+    public function testIndexWithoutFiltersHasNoSelectedOption(): void
+    {
+        $response = $this->get(route('tasks.index'));
+
+        $response->assertOk();
+        $this->assertSame(
+            0,
+            substr_count($response->getContent(), 'selected'),
+            'На странице без фильтров не должно быть выбранных опций',
+        );
+    }
+
     public function testIndexAppliesNotEmptyCreatorFilter(): void
     {
         $creator = User::factory()->create(['name' => 'Создатель уникальный']);
@@ -83,5 +95,19 @@ class TaskControllerFilterTest extends TestCase
         $response->assertOk();
         $response->assertSee($matchingTask->name);
         $response->assertDontSee('Чужая задача');
+    }
+
+    public function testIndexKeepsSelectedStatusFilter(): void
+    {
+        $response = $this->get(route('tasks.index', [
+            'filter' => ['status_id' => $this->firstStatus->id],
+        ]));
+
+        $response->assertOk();
+        $this->assertSame(
+            1,
+            substr_count($response->getContent(), 'selected'),
+            'Выбранный в фильтре статус должен остаться отмеченным',
+        );
     }
 }
