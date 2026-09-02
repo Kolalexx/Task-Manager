@@ -33,17 +33,7 @@
 
                             @include('flash::message')
 
-                            @isset($header)
-                                <div class="mb-5">
-                                    {{ $header }}
-                                </div>
-                            @endisset
-
                             @yield('content')
-
-                            @isset($slot)
-                                {{ $slot }}
-                            @endisset
 
                         </div>
                     </div>
