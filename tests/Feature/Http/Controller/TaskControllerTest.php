@@ -41,10 +41,19 @@ class TaskControllerTest extends TestCase
     public function testStore()
     {
         $this->actingAs($this->user);
-        $response = $this->post(route('tasks.store'), $this->task->toArray());
-        $this->assertDatabaseHas('tasks', $this->task
-            ->only('name', 'description', 'status_id', 'assigned_to_id'));
+        $task = Task::factory()->make();
+        $response = $this->post(
+            route('tasks.store'),
+            $task->only(['name', 'description', 'status_id', 'assigned_to_id']),
+        );
         $response->assertRedirect();
+        $this->assertDatabaseHas('tasks', [
+            'name' => $task->name,
+            'description' => $task->description,
+            'status_id' => $task->status_id,
+            'assigned_to_id' => $task->assigned_to_id,
+            'created_by_id' => $this->user->id,
+        ]);
     }
 
     public function testEdit()
