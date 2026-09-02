@@ -4,7 +4,7 @@
 
 ## Команды (Makefile — источник истины)
 - `make setup` — полная настройка: composer install, копирование `.env`, key:gen, migrate, seed, npm ci, `npm run build`, lint, phpstan, feature-тесты. Пропускает запуск PostgreSQL, если задан `CI`.
-- `make test` — `php artisan test --testsuite=Feature`
+- `make test` — `php artisan test` (запускает наборы `Feature` и `Unit`)
 - `make lint` — `composer exec phpcs -- --standard=PSR12 app routes tests`
 - `make phpstan` — `composer exec phpstan analyse` (level 5, конфиг `phpstan.neon`, tmpDir `storage/phpstan` в `.gitignore`)
 - `make start` — `php artisan serve` (http://localhost:8000)
@@ -19,8 +19,8 @@
 ## Важные особенности
 - Структура приложения — Laravel 11+/12: конфигурация в `bootstrap/app.php` (`withRouting`/`withMiddleware`/`withExceptions`), провайдеры — в `bootstrap/providers.php`, политики регистрируются явно через `Gate::policy()` в `AppServiceProvider::boot()`. Классические `Http/Console Kernel`, `Exceptions/Handler`, `RouteServiceProvider` отсутствуют.
 - Тесты работают на SQLite в памяти (принудительно задано в `phpunit.xml`) — **PostgreSQL для запуска тестов не нужен**. Для локальной разработки Postgres требуется; `make start-db` использует `sudo service postgresql start` (только Linux, на macOS не работает).
-- Тесты есть только в наборе `Feature`; набор `Unit` пуст. Используйте `--testsuite=Feature`.
-- Приложение локализовано на русский: `config/app.php` задаёт `locale`/`fallback_locale` = `ru`. Строки UI берутся из `lang/ru/views.php` через `__('views.task...')`. В `lang/en` **нет** `views.php` — новые ключи `views.*` нужно добавлять в `lang/ru/views.php`, иначе они не отобразятся.
+- Наборы тестов: `Feature` (контроллеры, auth, профиль, локализация) и `Unit` (политики, модели, `HasOptions`). `make test` запускает оба набора. Некоторые unit-тесты (`tests/Unit/Concerns`, `tests/Unit/Models`) используют in-memory SQLite, наследуя `Tests\TestCase`.
+- Приложение локализовано на русский: `config/app.php` задаёт `locale`/`fallback_locale` = `ru`. Строки UI берутся из `lang/ru/views.php` через `__('views.task...')`. В `lang/en` **нет** `views.php` — новые ключи `views.*` нужно добавлять в `lang/ru/views.php`, иначе они не отобразятся. «Сырые» ключи Breeze (`__('Delete Account')` и т.п.) переводятся в `lang/ru.json`.
 - Валидация форм — в Form Requests (`app/Http/Requests`, по классу на `store` и `update` каждого ресурса) с русскими сообщениями в методе `messages()`. `ProfileUpdateRequest` — от Breeze. `authorize()` в них не задан: права проверяются политиками через `$this->authorizeResource()`.
 - Ресурсные маршруты в snake_case: `tasks`, `task_statuses`, `labels` (имена маршрутов `task_statuses.index` и т.д.). Контроллеры вызывают `$this->authorizeResource()`; политики лежат в `app/Policies`.
 - `Task` использует `SoftDeletes` — feature-тест на удаление проверяет `assertSoftDeleted`.
