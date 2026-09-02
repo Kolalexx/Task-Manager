@@ -17,7 +17,7 @@ class LabelController extends Controller
 
     public function index(): View
     {
-        $labels = Label::all();
+        $labels = Label::paginate();
         return view('label.index', compact('labels'));
     }
 
