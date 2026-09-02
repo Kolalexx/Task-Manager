@@ -44,6 +44,11 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
+        if ($user->createdTasks()->exists() || $user->assignedTasks()->exists()) {
+            flash(__('views.profile.flash.destroy.constraint'))->error();
+            return Redirect::route('profile.edit');
+        }
+
         Auth::logout();
 
         $user->delete();
